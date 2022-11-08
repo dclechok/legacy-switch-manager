@@ -3,10 +3,16 @@
 .App {
   text-align: center;
   font-family: 'Montserrat', sans-serif;
+  -webkit-app-region: drag;
+  font-size: 12px;
 }
 
 header{
-  margin-top: 8%;
+  position: relative;
+  top: 30px;
+  letter-spacing: 4px;
+  -webkit-app-region: drag;
+  color: rgb(0, 0, 0);
 }
 
 .close-button-container{
@@ -16,5 +22,19 @@ header{
   z-index: 1;
   top: 5px;
   right: 5px;
-  color: rgb(140, 156, 186);
+  -webkit-app-region: no-drag;
+}
+
+.ip-selection-container{
+  top: 50;
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.add-remove-ips{
+  display: grid;
+  height: 100%;
+  grid-gap: 35px;
+  align-items: center;
 }

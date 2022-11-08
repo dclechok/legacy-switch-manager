@@ -1,0 +1,32 @@
+.address-box{
+    -webkit-app-region: no-drag;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(77, 76, 76);
+    width: auto;
+    min-width: 200px;
+    height: 150px;
+    text-align: left;
+    overflow-y: scroll;
+    padding: 1px;
+    word-wrap: break-word;
+    background-color: rgb(255, 255, 255);
+    color: black;
+}
+
+.address-box input{
+    margin-right: 4px;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+ul li{
+    text-indent: 0;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style-type: none;
+}
