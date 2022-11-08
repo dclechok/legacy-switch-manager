@@ -1,23 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
 
+const { ipcRenderer } = window.require('electron');
+
 function App() {
+
+  const handleMin = (e) => {
+    const { id } = e.currentTarget;
+    if(id === "min") ipcRenderer.send('minimize');
+  }
+
+  const handleClose = () => {
+    if(window.confirm('Are you sure you wish to exit?')) ipcRenderer.send('exit-app');
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header><h1>Legacy Crawler</h1></header>
+      <div className="close-button-container">
+      <button className="remove-btn-style" onClick={handleMin} id="min">[▼]</button>&nbsp;
+      <button className="remove-btn-style" onClick={handleClose} id="close">[X]</button>
+      </div>
+        <p>tEST</p>
     </div>
   );
 }
