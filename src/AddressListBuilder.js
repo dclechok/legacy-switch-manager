@@ -4,7 +4,11 @@ import { useState } from 'react';
 
 function AddressListBuilder() {
 
-    const [siteChecked, setSiteChecked] = useState();
+    const [siteChecked, setSiteChecked] = useState(false);
+
+    const siteCheckHandler = (e) => {
+        console.log(e.currentTarget.value)
+    };
 
     return (
 
@@ -12,7 +16,7 @@ function AddressListBuilder() {
         <ul>
             {
                 Object.keys(addresses).map((listItem, key) => {
-                    return (<><li id={listItem} key={key}><input type="checkbox" value={listItem}/><label htmlFor={listItem}>{listItem}</label></li></>)
+                    return (<><li id={listItem} key={key}><input type="checkbox" value={listItem} checked={siteChecked} onChange={siteCheckHandler}/><label htmlFor={listItem}>{listItem}</label></li></>)
                 })
             }
         </ul>
