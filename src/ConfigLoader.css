@@ -1,0 +1,11 @@
+.config-menu{
+    width: 67%;
+    top: 205px;
+    position: absolute;
+}
+
+.config-menu p{
+    display: inline;
+    white-space: no-wrap;
+    margin-right: 5px;
+}

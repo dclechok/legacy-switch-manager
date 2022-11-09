@@ -3,6 +3,7 @@ import './App.css';
 import { useState } from 'react';
 import AddressListBuilder from './AddressListBuilder';
 import QueueBuilder from './QueueBuilder';
+import ConfigLoader from './ConfigLoader';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -49,7 +50,7 @@ function App() {
         </div>
 
       </div>
-    
+      <ConfigLoader />
     <footer>Powered by Mawson Infrastructure Group © 2022</footer>
     </div>
   );
