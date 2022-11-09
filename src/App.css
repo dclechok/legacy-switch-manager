@@ -41,6 +41,7 @@ header h2{
   height: 100%;
   grid-gap: 35px;
   align-items: center;
+  -webkit-app-region: no-drag;
 }
 
 footer{
@@ -61,7 +62,7 @@ footer{
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: rgb(0, 0, 0);
-  border-radius: 40%;
+  border-radius: 14px 14px;
 }
 
 /* Handle on hover */

@@ -1,10 +1,11 @@
 import './QueueBuilder.css';
 
-function QueueBuilder() {
+function QueueBuilder({ queue }) {
+    console.log(queue)
     return (
-        <div className="que-box">
-            <h5>Queue</h5><hr />
-        </div>
+        <ul className="que-box">
+            {queue && queue.map(qItem => <li>{qItem}</li>)}
+        </ul>
     )
 }
 

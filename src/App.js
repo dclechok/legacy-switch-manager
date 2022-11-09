@@ -1,11 +1,15 @@
 import './App.css';
 
+import { useState } from 'react';
 import AddressListBuilder from './AddressListBuilder';
 import QueueBuilder from './QueueBuilder';
 
 const { ipcRenderer } = window.require('electron');
 
 function App() {
+
+  const [ipAddresses, setIpAddresses] = useState();
+  const [queue, setQueue] = useState();
 
   const handleMin = (e) => {
     const { id } = e.currentTarget;
@@ -15,6 +19,12 @@ function App() {
   const handleClose = () => {
     if (window.confirm('Are you sure you wish to exit?')) ipcRenderer.send('exit-app');
   }
+  console.log(ipAddresses)
+
+  const handleClick = (e) => {
+    const { id } = e.currentTarget;
+    setQueue(ipAddresses);
+  };
 
   return (
     <div className="App">
@@ -28,14 +38,14 @@ function App() {
       </div>
       <div className='ip-selection-container'>
         <div className='loaded-ips'>
-          <AddressListBuilder />
+          <AddressListBuilder setIpAddresses={setIpAddresses} />
         </div>
         <div className='add-remove-ips'>
-          <button>&gt;</button>
+          <button onClick={handleClick} id="add">&gt;</button>
           <button>&lt;</button>
         </div>
         <div className='selected-ips'>
-          <QueueBuilder />
+          <QueueBuilder queue={queue} />
         </div>
 
       </div>

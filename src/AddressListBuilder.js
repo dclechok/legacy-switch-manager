@@ -2,7 +2,7 @@ import './AddressListBuilder.css';
 import addresses from './config/addresses.json'; //inventory of all addresses
 import { useEffect, useState } from 'react';
 
-function AddressListBuilder() {
+function AddressListBuilder({ setIpAddresses }) {
     const defaultNavKey = { site: "--select site--", mdc: "--all mdcs--", rack: "--all racks--" };
     const [navKey, setNavKey] = useState(defaultNavKey);
     const [formattedNavKey, setFormattedNavKey] = useState();
@@ -11,7 +11,6 @@ function AddressListBuilder() {
     const [sites, setSites] = useState(); //set current list of sites
     const [mdcs, setMdcs] = useState(); //set current list of mdcs (from selected site)
     const [racks, setRacks] = useState(); //set current list of racks (from selected sites/mdcs)
-    const [ipAddresses, setIpAddresses] = useState();
 
     useEffect(() => {
         if (addresses) {
@@ -23,9 +22,7 @@ function AddressListBuilder() {
         }
     }, []);
     //navKey is for building out select menues, storing actual addresses in ipAddresses state var
-    
-    console.log(ipAddresses)
-
+    //configure select menus (disabling and loading IP addresses)
     const handleSelectChange = (e) => {
         const { id, value } = e.currentTarget;
         if (id === "site" && value !== "--select site--") {
@@ -46,7 +43,7 @@ function AddressListBuilder() {
             setIpAddresses([]);
         }
         if (id === "mdc" && value !== `--all mdcs--`) {
-            setNavKey({ ...navKey, mdc: value, rack: "" });
+            setNavKey({ ...navKey, mdc: value, rack: defaultNavKey.rack });
             setRackEnabled(true);
             setRacks(addresses[navKey.site][value].rackswitches);
             setIpAddresses(addresses[navKey.site][value].rackswitches);
