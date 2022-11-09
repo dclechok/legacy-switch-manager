@@ -6,7 +6,7 @@ const { app, BrowserWindow, ipcMain } = electron;
 require('@electron/remote/main').initialize();
 
 let mainWindow;
-console.log(isDev)
+
 function createWindow(){
     mainWindow = new BrowserWindow({
         //size defaults to 800x800

@@ -1,58 +1,85 @@
 import './AddressListBuilder.css';
 import addresses from './config/addresses.json'; //inventory of all addresses
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function AddressListBuilder() {
 
-    const [siteChecked, setSiteChecked] = useState(false);
-
+    const [navKey, setNavKey] = useState({ site: "--select site--", mdc: "", rack: ""});
+    const [mdcEnabled, setMdcEnabled] = useState(false);
+    const [rackEnabled, setRackEnabled] = useState(false);
+    const [sites, setSites] = useState(); //set current list of sites
+    const [mdcs, setMdcs] = useState(); //set current list of mdcs (from selected site)
+    const [racks, setRacks] = useState(); //set current list of racks (from selected sites/mdcs)
     const siteCheckHandler = (e) => {
         console.log(e.currentTarget.value)
     };
 
-    return (
-
-    <div className="address-box">
-        <ul>
-            {
-                Object.keys(addresses).map((listItem, key) => {
-                    return (<><li id={listItem} key={key}><input type="checkbox" value={listItem} checked={siteChecked} onChange={siteCheckHandler}/><label htmlFor={listItem}>{listItem}</label></li></>)
-                })
+    useEffect(() => {
+        if (addresses) {
+            try {
+                setSites(Object.keys(addresses));
+            } catch (e) {
+                console.log(e, 'JSON file is not formatted correctly!');
             }
-        </ul>
-    {/* <input type="checkbox" />
-    <label>Midland, PA</label><br />
-    &nbsp;&nbsp;<input type="checkbox" />
-    <label htmlFor="all-ips">Rack Switches</label><br />
+        }
+    }, []);
 
+    const handleSelectChange = (e) => {
+        const { id, value } = e.currentTarget;
+        if(id === "site" && value !== "--select site--"){
+            setNavKey({...navKey, site: value, mdc: "", rack: ""});
+            setMdcEnabled(true);
+            setMdcs(Object.keys(addresses[value]));
+        }
+        if(id === "site" && value === "--select site--"){
+            setNavKey({site: "--select site--", mdc: "", rack: ""});
+            setMdcEnabled(false);
+            setRackEnabled(false);
+            setMdcs([])
+        }
+        if(id === "mdc" && value !== `All ${navKey.site} MDCs`){
+            setNavKey({...navKey, mdc: value, rack: ""});
+            setRackEnabled(true);
+            setRacks(addresses[navKey.site][value].rackswitches);
+        }
+        if(id === "mdc" && value === `All ${navKey.site} MDCs`){
+            setNavKey({...navKey, rack: ""})
+            setRackEnabled(false);
+            setRacks([]);
+        }
+    };
 
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>MDC01</label><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>10.1.1.200</label><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>10.1.2.200</label><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>10.1.3.200</label><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>10.1.4.200</label><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>10.1.5.200</label><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>10.1.6.200</label><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>MDC02</label><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>MDC03</label><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" />
-    <label>MDC04</label><br />
-
-    &nbsp;&nbsp;<input type="checkbox" />
-    <label htmlFor="all-ips">Core Switches</label><br />
-    <hr />
-    <input type="checkbox" />
-    <label>Sharon, PA</label><br /> */}
-    </div>  
+    return (
+        <div>
+        <p>You are currently adding: </p>
+        <div>
+            {sites &&
+                <select id="site" onChange={handleSelectChange}>
+                    <option defaultValue="--select site--">--select site--</option>
+                    {
+                        sites.map((site, key) => {
+                            return <option value={site} key={key}>{site}</option>
+                        })
+                    }
+                </select>}
+                <select id="mdc" onChange={handleSelectChange} disabled={!mdcEnabled}>
+                    {navKey.site !== "--select site--" && <option defaultValue="">All {navKey.site} MDCs</option>}
+                    {mdcs &&
+                        mdcs.map((mdc, key) => {
+                            return <option value={mdc} key={key}>All {mdc.toUpperCase()}</option>
+                        })
+                    }
+                </select>
+                <select id="rack" onChange={handleSelectChange} disabled={!rackEnabled}>
+                    {navKey.site !== "--select site--" && <option defaultValue={'--select rack--'}>--select rack--</option>}
+                    {racks &&
+                        racks.map((rack, key) => {
+                            return <option value={rack} key={key}>Rack Switch {rack}</option>
+                        })
+                    }
+                </select>
+        </div>
+        </div>
     );
 }
 
