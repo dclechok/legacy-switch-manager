@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 function AddressListBuilder() {
 
     const [navKey, setNavKey] = useState({ site: "--select site--", mdc: "", rack: ""});
+    const [formattedNavKey, setFormattedNavKey] = useState();
     const [mdcEnabled, setMdcEnabled] = useState(false);
     const [rackEnabled, setRackEnabled] = useState(false);
     const [sites, setSites] = useState(); //set current list of sites
@@ -30,28 +31,36 @@ function AddressListBuilder() {
             setNavKey({...navKey, site: value, mdc: "", rack: ""});
             setMdcEnabled(true);
             setMdcs(Object.keys(addresses[value]));
+            setFormattedNavKey(`All ${value} Rackswitches`)
         }
         if(id === "site" && value === "--select site--"){
-            setNavKey({site: "--select site--", mdc: "", rack: ""});
+            setNavKey({site: "--select site--", mdc: `All ${navKey.mdc} MDCs`, rack: ""});
             setMdcEnabled(false);
             setRackEnabled(false);
             setMdcs([])
+            setFormattedNavKey(`None`)
         }
         if(id === "mdc" && value !== `All ${navKey.site} MDCs`){
             setNavKey({...navKey, mdc: value, rack: ""});
             setRackEnabled(true);
             setRacks(addresses[navKey.site][value].rackswitches);
+            setFormattedNavKey(`${navKey.site} - All ${value.toUpperCase()} Rackswitches`)
         }
         if(id === "mdc" && value === `All ${navKey.site} MDCs`){
-            setNavKey({...navKey, rack: ""})
+            setNavKey({...navKey, rack: `All ${navKey.site} Racks`});
             setRackEnabled(false);
             setRacks([]);
+            setFormattedNavKey(`All ${navKey.site} Rackswitches`)
+        }
+        if(id === "rack" && value !== "--select rack--"){
+            setNavKey({...navKey, rack: `All ${navKey.site} Racks`});
+            setFormattedNavKey(`${navKey.site} - ${navKey.mdc.toUpperCase()} - Rackswitch ${value}`)
         }
     };
 
     return (
         <div>
-        <p>You are currently adding: </p>
+        <p>You are currently adding: {formattedNavKey}</p>
         <div>
             {sites &&
                 <select id="site" onChange={handleSelectChange}>
@@ -63,7 +72,7 @@ function AddressListBuilder() {
                     }
                 </select>}
                 <select id="mdc" onChange={handleSelectChange} disabled={!mdcEnabled}>
-                    {navKey.site !== "--select site--" && <option defaultValue="">All {navKey.site} MDCs</option>}
+                    {navKey.site !== "--select site--" && <option defaultValue={`All ${navKey.site} MDCs`}>All {navKey.site} MDCs</option>}
                     {mdcs &&
                         mdcs.map((mdc, key) => {
                             return <option value={mdc} key={key}>All {mdc.toUpperCase()}</option>
