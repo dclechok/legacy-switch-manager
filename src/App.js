@@ -1,6 +1,7 @@
 import './App.css';
 
 import AddressListBuilder from './AddressListBuilder';
+import QueueBuilder from './QueueBuilder';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -17,7 +18,10 @@ function App() {
 
   return (
     <div className="App">
-      <header><h1>Legacy Crawler</h1></header>
+      <header>
+        <h1>Lyra</h1>
+        <h2>Mass Affect Legacy Switch Configurations</h2>
+      </header>
       <div className="close-button-container">
         <button className="remove-btn-style" onClick={handleMin} id="min">[▼]</button>&nbsp;
         <button className="remove-btn-style" onClick={handleClose} id="close">[X]</button>
@@ -31,11 +35,12 @@ function App() {
           <button>&lt;</button>
         </div>
         <div className='selected-ips'>
-          <p>This is selection container</p>
+          <QueueBuilder />
         </div>
 
       </div>
-    <hr />
+    
+    <footer>Powered by Mawson Infrastructure Group © 2022</footer>
     </div>
   );
 }

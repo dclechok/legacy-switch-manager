@@ -15,6 +15,10 @@ header{
   color: rgb(0, 0, 0);
 }
 
+header h2{
+  font-size: 10px;
+}
+
 .close-button-container{
   display: block;
   font-size: 11px;
@@ -37,4 +41,30 @@ header{
   height: 100%;
   grid-gap: 35px;
   align-items: center;
+}
+
+footer{
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #d4d4d4;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(0, 0, 0);
+  border-radius: 40%;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(26, 26, 26);
 }

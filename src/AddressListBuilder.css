@@ -20,4 +20,20 @@
 
 select{
     -webkit-app-region: no-drag;
+    text-align: center;
+}
+
+.format-navkey-width{
+    width: 420px;
+}
+.select-site-width{
+    width: 150px;
+}
+
+.select-mdc-width{
+    width: 150px;
+}
+
+.select-rack-width{
+    width: 170px;
 }
