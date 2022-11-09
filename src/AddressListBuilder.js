@@ -3,14 +3,15 @@ import addresses from './config/addresses.json'; //inventory of all addresses
 import { useEffect, useState } from 'react';
 
 function AddressListBuilder() {
-
-    const [navKey, setNavKey] = useState({ site: "--select site--", mdc: "", rack: "" });
+    const defaultNavKey = { site: "--select site--", mdc: "--all mdcs--", rack: "--all racks--" };
+    const [navKey, setNavKey] = useState(defaultNavKey);
     const [formattedNavKey, setFormattedNavKey] = useState();
     const [mdcEnabled, setMdcEnabled] = useState(false);
     const [rackEnabled, setRackEnabled] = useState(false);
     const [sites, setSites] = useState(); //set current list of sites
     const [mdcs, setMdcs] = useState(); //set current list of mdcs (from selected site)
     const [racks, setRacks] = useState(); //set current list of racks (from selected sites/mdcs)
+    const [ipAddresses, setIpAddresses] = useState();
 
     useEffect(() => {
         if (addresses) {
@@ -21,42 +22,51 @@ function AddressListBuilder() {
             }
         }
     }, []);
+    //navKey is for building out select menues, storing actual addresses in ipAddresses state var
+    
+    console.log(ipAddresses)
 
-    console.log(navKey)
     const handleSelectChange = (e) => {
         const { id, value } = e.currentTarget;
         if (id === "site" && value !== "--select site--") {
             setNavKey({ ...navKey, site: value, mdc: "", rack: "" });
             setMdcEnabled(true);
+            setRackEnabled(false);
             setMdcs(Object.keys(addresses[value]));
+            setIpAddresses(Object.values(addresses[value]).map(mdc => mdc.rackswitches)) //site IP addresses
             setFormattedNavKey(`All ${value} Rackswitches`)
         }
         if (id === "site" && value === "--select site--") {
-            setNavKey({ site: "--select site--", mdc: `All ${navKey.mdc} MDCs`, rack: "" });
+            setNavKey({ site: "--select site--", mdc: defaultNavKey.mdc, rack: defaultNavKey.rack });
             setMdcEnabled(false);
             setRackEnabled(false);
             setMdcs([]);
             setRacks([]);
             setFormattedNavKey(`None`)
+            setIpAddresses([]);
         }
-        if (id === "mdc" && value !== `All ${navKey.site} MDCs`) {
+        if (id === "mdc" && value !== `--all mdcs--`) {
             setNavKey({ ...navKey, mdc: value, rack: "" });
             setRackEnabled(true);
             setRacks(addresses[navKey.site][value].rackswitches);
+            setIpAddresses(addresses[navKey.site][value].rackswitches);
             setFormattedNavKey(`${navKey.site} - All ${value.toUpperCase()} Rackswitches`);
         }
-        if (id === "mdc" && value === `All ${navKey.site} MDCs`) {
-            setNavKey({ ...navKey, rack: `All ${navKey.site} Racks` });
+        if (id === "mdc" && value === `--all mdcs--`) {
+            setNavKey({ ...navKey, mdc: defaultNavKey.mdc, rack: defaultNavKey.rack });
             setRackEnabled(false);
-            setRacks([]);
+            setIpAddresses(Object.values(addresses[navKey.site]).map(mdc => mdc.rackswitches));
+            setRacks([])
             setFormattedNavKey(`All ${navKey.site} Rackswitches`);
         }
         if (id === "rack" && value !== "--all racks--") {
             setNavKey({ ...navKey, rack: value });
+            setIpAddresses([value]);
             setFormattedNavKey(`${navKey.site} - ${navKey.mdc.toUpperCase()} - Rackswitch ${value}`)
         }
         if (id === "rack" && value === "--all racks--") {
-            setNavKey({ ...navKey, rack: racks})
+            setNavKey({ ...navKey, rack: racks});
+            setIpAddresses(addresses[navKey.site][navKey.mdc].rackswitches);
             setFormattedNavKey(`All ${navKey.site} - ${navKey.mdc.toUpperCase()} Rackswitches`);
         }
     };
@@ -67,7 +77,7 @@ function AddressListBuilder() {
             <div>
                 {sites &&
                     <select className='select-site-width' id="site" onChange={handleSelectChange}>
-                        <option defaultValue="--select site--">--select site--</option>
+                        <option defaultValue={defaultNavKey.site}>{defaultNavKey.site}</option>
                         {
                             sites.map((site, key) => {
                                 return <option value={site} key={key}>{site}</option>
@@ -75,7 +85,7 @@ function AddressListBuilder() {
                         }
                     </select>}
                 <select className='select-mdc-width' id="mdc" onChange={handleSelectChange} disabled={!mdcEnabled}>
-                    {navKey.site !== "--select site--" && <option defaultValue={`All ${navKey.site} MDCs`}>All {navKey.site} MDCs</option>}
+                    <option defaultValue={defaultNavKey.mdc}>{defaultNavKey.mdc}</option>
                     {mdcs &&
                         mdcs.map((mdc, key) => {
                             return <option value={mdc} key={key}>All {mdc.toUpperCase()}</option>
@@ -83,10 +93,10 @@ function AddressListBuilder() {
                     }
                 </select>
                 <select className='select-rack-width' id="rack" onChange={handleSelectChange} disabled={!rackEnabled}>
-                    {navKey.site !== "--select site--" && <option defaultValue={'--all racks--'}>--all racks--</option>}
+                    <option defaultValue={defaultNavKey.rack}>{defaultNavKey.rack}</option>
                     {racks &&
                         racks.map((rack, key) => {
-                            return <option value={rack} key={key}>Rack Switch {rack}</option>
+                            return <option value={rack} key={key + 1}>Rack Switch {rack}</option>
                         })
                     }
                 </select>
