@@ -4,6 +4,7 @@ import { useState } from 'react';
 import AddressListBuilder from './AddressListBuilder';
 import QueueBuilder from './QueueBuilder';
 import ConfigLoader from './ConfigLoader';
+import OutputLog from './OutputLog';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -39,7 +40,7 @@ function App() {
       </div>
       <div className='ip-selection-container'>
         <div className='loaded-ips'>
-          <AddressListBuilder setIpAddresses={setIpAddresses} />
+          <AddressListBuilder setIpAddresses={setIpAddresses} ipAddresses={ipAddresses} />
         </div>
         <div className='add-remove-ips'>
           <button onClick={handleClick} id="add">&gt;</button>
@@ -51,6 +52,7 @@ function App() {
 
       </div>
       <ConfigLoader />
+      <OutputLog />
     <footer>Powered by Mawson Infrastructure Group © 2022</footer>
     </div>
   );

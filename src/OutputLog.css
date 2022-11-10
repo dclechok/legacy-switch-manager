@@ -1,0 +1,9 @@
+.output-log{
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    top: 300px;
+    width: 67%;
+    height: 250px;
+    position: absolute;
+}

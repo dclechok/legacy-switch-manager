@@ -3,10 +3,12 @@
     border-color: #000000;
     border-style:double;
     width: 250px;
-    height: 250px;
+    height: 150px;
     overflow-y: scroll;
     overflow-x: hidden;
     -webkit-app-region: no-drag;
+    font-size: 11px;
+    outline: none !important;
 }
 
 .que-box h5{
@@ -15,7 +17,27 @@
     font-size: 12px;
 }
 
-.que-box li{
-    list-style: none;
-    text-align: left;
+select:active, select:hover {
+    box-shadow: 0 0 10px 100px #fff inset !important;
+    border-color: #000000 !important;
+    outline-color: red !important;
+    color: black;
+    outline: none !important;
+  }
+
+  select option:hover {
+    color: #000; 
+    box-shadow: inset 20px 20px rgb(184, 191, 213);
+    outline: none !important;
+  }
+
+  select option:checked {
+    box-shadow: 0 0 10px 100px rgb(184, 191, 213) inset !important;
+    color: rgb(0, 0, 0);
+    outline: none !important;
 }
+
+/* p{
+  position: absolute;
+  top: 8px;
+} */

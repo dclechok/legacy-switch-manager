@@ -2,10 +2,10 @@ import './AddressListBuilder.css';
 import addresses from './config/addresses.json'; //inventory of all addresses
 import { useEffect, useState } from 'react';
 
-function AddressListBuilder({ setIpAddresses }) {
+function AddressListBuilder({ setIpAddresses, ipAddresses }) {
     const defaultNavKey = { site: "--select site--", mdc: "--all mdcs--", rack: "--all racks--" };
     const [navKey, setNavKey] = useState(defaultNavKey);
-    const [formattedNavKey, setFormattedNavKey] = useState();
+    const [formattedNavKey, setFormattedNavKey] = useState("None");
     const [mdcEnabled, setMdcEnabled] = useState(false);
     const [rackEnabled, setRackEnabled] = useState(false);
     const [sites, setSites] = useState(); //set current list of sites
@@ -52,7 +52,7 @@ function AddressListBuilder({ setIpAddresses }) {
         if (id === "mdc" && value === `--all mdcs--`) {
             setNavKey({ ...navKey, mdc: defaultNavKey.mdc, rack: defaultNavKey.rack });
             setRackEnabled(false);
-            setIpAddresses(Object.values(addresses[navKey.site]).map(mdc => mdc.rackswitches));
+            setIpAddresses([Object.values(addresses[navKey.site]).map(mdc => mdc.rackswitches)].flat(2));
             setRacks([])
             setFormattedNavKey(`All ${navKey.site} Rackswitches`);
         }
