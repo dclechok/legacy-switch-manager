@@ -10,8 +10,8 @@ const { ipcRenderer } = window.require('electron');
 
 function App() {
 
-  const [ipAddresses, setIpAddresses] = useState();
-  const [queue, setQueue] = useState();
+  const [ipAddresses, setIpAddresses] = useState([]);
+  const [queue, setQueue] = useState([]);
 
   const handleMin = (e) => {
     const { id } = e.currentTarget;
@@ -21,11 +21,14 @@ function App() {
   const handleClose = () => {
     if (window.confirm('Are you sure you wish to exit?')) ipcRenderer.send('exit-app');
   }
+  console.log(queue)
   console.log(ipAddresses)
-
   const handleClick = (e) => {
     const { id } = e.currentTarget;
-    setQueue(ipAddresses);
+    //flatten if multiple arrays (MDCs) are included, and build a set incase of duplicates
+    // const queueSet;
+    //queue is always an array
+    setQueue(new Set([...queue, ipAddresses.flat(4)].flat(2))); 
   };
 
   return (
