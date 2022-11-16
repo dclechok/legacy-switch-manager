@@ -12,6 +12,7 @@ function App() {
 
   const [ipAddresses, setIpAddresses] = useState([]);
   const [queue, setQueue] = useState([]);
+  const [selected, setSelected] = useState([]); //for setting selected menu items in queue
 
   const handleMin = (e) => {
     const { id } = e.currentTarget;
@@ -21,16 +22,15 @@ function App() {
   const handleClose = () => {
     if (window.confirm('Are you sure you wish to exit?')) ipcRenderer.send('exit-app');
   }
-  console.log(queue)
-  console.log(ipAddresses)
+
   const handleClick = (e) => {
     const { id } = e.currentTarget;
     //flatten if multiple arrays (MDCs) are included, and build a set incase of duplicates
-    // const queueSet;
-    //queue is always an array
-    setQueue(new Set([...queue, ipAddresses.flat(4)].flat(2))); 
+    if(id === "add") setQueue(new Set([...queue, ipAddresses.flat(4)].flat(2))); 
+    if(id === "remove") setQueue(new Set(Array.from(queue).filter(qItem => !selected.find(sel => qItem === sel))));
   };
 
+  console.log(queue)
   return (
     <div className="App">
       <header>
@@ -47,10 +47,10 @@ function App() {
         </div>
         <div className='add-remove-ips'>
           <button onClick={handleClick} id="add">&gt;</button>
-          <button>&lt;</button>
+          <button onClick={handleClick} id="remove">&lt;</button>
         </div>
         <div className='selected-ips'>
-          <QueueBuilder queue={queue} />
+          <QueueBuilder queue={queue} setSelected={setSelected} />
         </div>
 
       </div>
