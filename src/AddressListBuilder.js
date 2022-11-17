@@ -48,6 +48,8 @@ function AddressListBuilder({ setIpAddresses, ipAddresses }) {
             setRacks(addresses[navKey.site][value].rackswitches);
             setIpAddresses(addresses[navKey.site][value].rackswitches);
             setFormattedNavKey(`${navKey.site} - All ${value.toUpperCase()} Rackswitches`);
+            const mdcList = document.getElementById("rack");
+            mdcList.value = defaultNavKey.rack;
         }
         if (id === "mdc" && value === `--all mdcs--`) {
             setNavKey({ ...navKey, mdc: defaultNavKey.mdc, rack: defaultNavKey.rack });

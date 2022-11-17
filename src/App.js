@@ -11,7 +11,7 @@ const { ipcRenderer } = window.require('electron');
 function App() {
 
   const [ipAddresses, setIpAddresses] = useState([]);
-  const [queue, setQueue] = useState([]);
+  const [queue, setQueue] = useState([]); //stores what is in queue to be configured
   const [selected, setSelected] = useState([]); //for setting selected menu items in queue
 
   const handleMin = (e) => {
@@ -28,7 +28,9 @@ function App() {
     //flatten if multiple arrays (MDCs) are included, and build a set incase of duplicates
     if(id === "add") setQueue(new Set([...queue, ipAddresses.flat(4)].flat(2))); 
     if(id === "remove"){
+      //create a new queue, from a set, that is a filtered queue based on what exists in selected
       setQueue(new Set(Array.from(queue).filter(qItem => !selected.find(sel => qItem === sel))));
+      //remove "checked" values from selected queue once removed from queue list, this destroys highlights of non-selected IPs
       const thisQ = document.getElementById("que-builder");
       thisQ.value = [];
     }
@@ -56,7 +58,6 @@ function App() {
         <div className='selected-ips'>
           <QueueBuilder queue={queue} selected={selected} setSelected={setSelected} />
         </div>
-
       </div>
       <ConfigLoader />
       <OutputLog />
