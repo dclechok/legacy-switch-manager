@@ -27,10 +27,14 @@ function App() {
     const { id } = e.currentTarget;
     //flatten if multiple arrays (MDCs) are included, and build a set incase of duplicates
     if(id === "add") setQueue(new Set([...queue, ipAddresses.flat(4)].flat(2))); 
-    if(id === "remove") setQueue(new Set(Array.from(queue).filter(qItem => !selected.find(sel => qItem === sel))));
+    if(id === "remove"){
+      setQueue(new Set(Array.from(queue).filter(qItem => !selected.find(sel => qItem === sel))));
+      const thisQ = document.getElementById("que-builder");
+      thisQ.value = [];
+    }
   };
 
-  console.log(queue)
+
   return (
     <div className="App">
       <header>
@@ -50,7 +54,7 @@ function App() {
           <button onClick={handleClick} id="remove">&lt;</button>
         </div>
         <div className='selected-ips'>
-          <QueueBuilder queue={queue} setSelected={setSelected} />
+          <QueueBuilder queue={queue} selected={selected} setSelected={setSelected} />
         </div>
 
       </div>

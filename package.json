@@ -1,5 +1,5 @@
 {
-  "name": "Legacy Crawler",
+  "name": "Lyra",
   "version": "0.1.0",
   "main": "public/electron.js",
   "homepage": "./",
