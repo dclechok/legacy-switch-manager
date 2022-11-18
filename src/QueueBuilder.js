@@ -17,8 +17,7 @@ function QueueBuilder({ queue, selected, setSelected }) {
             {queue && Array.from(queue).map((qItem, key) => <option key={key}>{qItem}</option>).sort((a, b) => {
                 const destructureA = a.props.children.split('.'); // ['10', '2', '13', '200']
                 const destructureB = b.props.children.split('.'); // ['10', '7', '3', '200']
-                console.log(destructureA[1], destructureB[1])
-                // console.log(Number(destructureA) - Number(destructureB));
+                //sort queue list based on second and third octet to find IPs easily in order
                 if(Number(destructureA[1]) > Number(destructureB[1])) return 1;
                 if(Number(destructureA[1]) < Number(destructureB[1])) return -1;
                 if(Number(destructureA[2]) > Number(destructureB[2])) return 1;
