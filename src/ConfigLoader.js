@@ -1,14 +1,15 @@
 import './ConfigLoader.css';
 
 function ConfigLoader() {
+
+    //"stock" configurations will auto-detect device model/version for applying the correct config (between 3750 and 2960 cisco switches)
     return (
         <div className="config-menu">
             <p>Choose Configuration:</p>
             <select>
                 <option>--select config--</option>
-                <option>Mawson 3750 Stock</option>
-                <option>Mawson 2960 Stock</option>
-                <option>Change Password</option>
+                <option id="stock">Mawson Stock</option>
+                <option id="password">Change Password</option>
                 <option>Custom...</option>
             </select><br /><br />
             <button>Push Configuration</button>
