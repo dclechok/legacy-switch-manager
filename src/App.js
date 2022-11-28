@@ -59,7 +59,7 @@ function App() {
           <QueueBuilder queue={queue} selected={selected} setSelected={setSelected} />
         </div>
       </div>
-      <ConfigLoader />
+      <ConfigLoader queue={queue} />
       <OutputLog />
     <footer>Powered by Mawson Infrastructure Group © 2022</footer>
     </div>

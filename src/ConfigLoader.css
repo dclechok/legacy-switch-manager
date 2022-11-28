@@ -9,3 +9,7 @@
     white-space: no-wrap;
     margin-right: 5px;
 }
+
+#push-config{
+    -webkit-app-region: no-drag;
+}
