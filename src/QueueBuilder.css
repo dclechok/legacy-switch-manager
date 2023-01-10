@@ -1,7 +1,7 @@
 .que-box{
     border-width: 2px;
     border-color: #000000;
-    border-style:double;
+    border-style: solid;
     width: 250px;
     height: 150px;
     overflow-y: scroll;

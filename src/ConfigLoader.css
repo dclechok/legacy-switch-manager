@@ -4,10 +4,21 @@
     position: absolute;
 }
 
+
 .config-menu p{
     display: inline;
     white-space: no-wrap;
     margin-right: 5px;
+}
+
+.config-menu input, input button{
+    -webkit-app-region: no-drag;
+    padding-right: 10px;
+    color: rgb(90, 88, 211);
+}
+
+.config-menu button{
+    -webkit-app-region: no-drag;
 }
 
 #push-config{
