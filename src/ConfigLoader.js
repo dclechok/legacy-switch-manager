@@ -1,36 +1,44 @@
 import './ConfigLoader.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function ConfigLoader({ queue }) {
     const BASE_URL = "http://localhost:5000/";
-    const [config, setConfig] = useState();
-    const [clickVal, setClickVal] = useState();
-    const [stockConf, setStockConf] = useState(false);
+    const [blobPromise, setBlobPromise] = useState(); //stores text data parsed from .txt file upload
+    const [giveNonValidationWarning, setGiveNonValidationWarning] = useState(false); //only warn once while app is loaded that Lyra does not validate configurations
 
-    const handleConfigSubmit= (e) => {
+    const handleConfigSubmit = async (e) => {
         e.preventDefault();
-        //validate that we have a text file
-        console.log(e.currentTarget.id);
-        if(e.target.id === 'stop') window.alert('Stopped!');
-        else if(e.currentTarget.id === 'push'){
-            window.confirm('Lyra does not validate your configuration! Please check that you have uploaded a valid configuration. Click OK if you wish to proceed. (Read documentation to see how configurations need to be formatted.)');
-            console.log(e.target);
-            // setConfig(e.target[0].file);
-            // var fileReader = new FileReader();
-            // fileReader.readAsText(config);
+        if(e.currentTarget.id === 'stop') window.alert('Stopped!'); //cancel config push
+        if(e.currentTarget.id === 'push'){
+            if(!giveNonValidationWarning){
+                setGiveNonValidationWarning(true);
+                window.confirm('Lyra does not validate your configuration! Please check that you have uploaded a valid configuration. Click OK if you wish to proceed. (Read documentation to see how configurations need to be formatted.)');
+            }
+            if(blobPromise){
+                //if file uploaded was valid .txt file, and turned into blob of text, prompt for username/password and proceed with applying configurations to switch list
+                console.log(blobPromise)
+            }
         }
-
     };
 
-    const handleConfigClick = (e) => {
-        setClickVal(e.currentTarget.id);
+    const handleUploadFile = async (e) => {
+        //create blob and read data from text file
+        e.preventDefault();
+        if(e.currentTarget.files[0].type !== "text/plain"){ //accept text files only
+            document.getElementById('new-config').value = ""; //if not text file clear upload
+            return window.alert('Uploaded configuration must be in ".txt" format only!');
+        
+        }
+        else{
+            const textBlob = new Blob(e.currentTarget.files);
+            setBlobPromise(await Promise.resolve(textBlob.text()));
+        }
     }
 
     const handleConfigPush = (e) => {
         //validate if we want to push this configuration for sure (and queue is not empty)
         //assuming all switches selected in queue have the same username / password - enter username / password
         if (queue.size === 0) return window.alert("Queue is empty!");
-        if (config === "--select config--") return window.alert("A configuration must be selected!");
         async function serverCall() {
             try {
                 const response = await fetch(BASE_URL + "ssh", {
@@ -40,7 +48,7 @@ function ConfigLoader({ queue }) {
                     },
                     body: JSON.stringify({
                         data: {
-                            stock: stockConf, //true or false if stock configuration is selected
+                            // stock: stockConf, //true or false if stock configuration is selected
                             queue: Array.from(queue) //turn set of queued items into an array
                         }
                     })
@@ -58,7 +66,7 @@ function ConfigLoader({ queue }) {
     return (
         <div className="config-menu">
             <form>
-                <input type="file" name="new-config" accept=".txt" /><br /><br />
+                <input type="file" id="new-config" name="new-config" accept=".txt" onChange={handleUploadFile}/><br /><br />
                 <button id="push" onClick={handleConfigSubmit}>Push Configuration</button>
                 <button id="stop" onClick={handleConfigSubmit}>Stop</button>
             </form>
