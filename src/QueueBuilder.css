@@ -1,5 +1,5 @@
 .que-box{
-    border-width: 2px;
+    border-width: 1px;
     border-color: #000000;
     border-style: solid;
     width: 250px;
@@ -9,6 +9,7 @@
     -webkit-app-region: no-drag;
     font-size: 11px;
     outline: none !important;
+    box-shadow: rgba(49, 51, 67, 0.5) 2px 2px 4px 4px;
 }
 
 .que-box h5{

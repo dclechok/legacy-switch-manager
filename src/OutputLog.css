@@ -1,9 +1,10 @@
 .output-log{
     border-width: 1px;
     border-style: solid;
-    border-color: black;
+    border-color: rgb(0, 0, 0);
+    box-shadow: rgba(49, 51, 67, 0.5) 2px 2px 4px 4px;
     top: 300px;
-    width: 67%;
+    width: 66%;
     height: 250px;
     position: absolute;
 }
