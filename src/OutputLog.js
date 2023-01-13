@@ -4,9 +4,9 @@ import { useState } from 'react';
 // import doSSH from './ssh/nodeSsh';
 
 
-function OutputLog() {
+function OutputLog({ outputStream }) {
 
-  // const [outputStream, setOutputStream] = useState();
+  // console.log(outputStream);
 
   // setOutputStream(doSSH);export async '
 

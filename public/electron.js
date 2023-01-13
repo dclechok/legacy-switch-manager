@@ -10,7 +10,7 @@ let mainWindow;
 function createWindow(){
     mainWindow = new BrowserWindow({
         //size defaults to 800x800
-        title: 'Palmetto',
+        title: 'Lyra',
         resizable: false,
         autoHideMenuBar: true,
         frame: false,
